@@ -412,7 +412,7 @@ CONFIG_DEFAULT_luci-app-eqos=y
 CONFIG_DEFAULT_luci-app-guest-wifi=y
 CONFIG_DEFAULT_luci-app-hd-idle=y
 CONFIG_DEFAULT_luci-app-kcptun=y
-CONFIG_DEFAULT_luci-app-openvpn-server=y
+# CONFIG_DEFAULT_luci-app-openvpn-server is not set
 CONFIG_DEFAULT_luci-app-pptp-server=y
 CONFIG_DEFAULT_luci-app-sfe=y
 CONFIG_DEFAULT_luci-app-smartdns=y
