@@ -8,7 +8,9 @@ on:
 
 env:
   TARGET_DEVICE: domywifi-dw33d
+  TARGET_DEVICE: dw33d-test
   TOTAL_KEEP_NUMBER: 20
+  SUFFIX: plus-diy-test
 
 jobs:
   build:
@@ -32,7 +34,7 @@ jobs:
 
           LEDE_VERSION="$(cat version)"
           echo "LEDE_VERSION=${LEDE_VERSION}" >>$GITHUB_ENV
-          LEDE_OUTPUT_NAME="lede-${LEDE_VERSION}-${TARGET_DEVICE}-plus-pro"
+          LEDE_OUTPUT_NAME="lede-${LEDE_VERSION}-${TARGET_DEVICE}-${SUFFIX}"
           echo "LEDE_OUTPUT_NAME=${LEDE_OUTPUT_NAME}" >>$GITHUB_ENV
 
       - name: 载入自定义配置
