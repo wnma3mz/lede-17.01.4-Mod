@@ -1,8 +1,10 @@
 name: Build LEDE domywifi-dw33d
 
 on:
-  push:
-    branches: [master]
+  # push:
+  #   branches: [master]
+  watch:
+    types: started
 
 env:
   TARGET_DEVICE: domywifi-dw33d
@@ -11,12 +13,13 @@ env:
 jobs:
   build:
     runs-on: ubuntu-18.04
+    if: github.event.repository.owner.id == github.event.sender.id
 
     steps:
       - name: Checkout
         uses: actions/checkout@master
 
-      - name: Initialization environment
+      - name: 初始化环境
         env:
           DEBIAN_FRONTEND: noninteractive
         run: |
@@ -29,23 +32,23 @@ jobs:
 
           LEDE_VERSION="$(cat version)"
           echo "LEDE_VERSION=${LEDE_VERSION}" >>$GITHUB_ENV
-          LEDE_OUTPUT_NAME="lede-${LEDE_VERSION}-${TARGET_DEVICE}"
+          LEDE_OUTPUT_NAME="lede-${LEDE_VERSION}-${TARGET_DEVICE}-plus-pro"
           echo "LEDE_OUTPUT_NAME=${LEDE_OUTPUT_NAME}" >>$GITHUB_ENV
 
-      - name: Load custom configuration
+      - name: 载入自定义配置
         run: |
           ./clean_all.sh
           cp -f "conf/.config.$TARGET_DEVICE" .config        
           make defconfig V=s
 
-      - name: Download package
+      - name: 下载软件包
         id: package
         run: |
           make download -j8 || make download -j1 V=s
           find dl -size -1024c -exec ls -l {} \;
           find dl -size -1024c -exec rm -f {} \;
 
-      - name: Compile firmware
+      - name: 编译固件
         id: compile
         run: |
           echo -e "$(($(nproc) + 1)) thread compile"
@@ -56,14 +59,14 @@ jobs:
           zip -j "${LEDE_OUTPUT_NAME}.zip" out/*.bin
           echo "::set-output name=status::success"
 
-      - name: Upload firmware directory
+      - name: 上传固件
         uses: actions/upload-artifact@master
         if: steps.compile.outputs.status == 'success'
         with:
           name: ${{ env.LEDE_OUTPUT_NAME }}
           path: out
 
-      - name: Create release
+      - name: 发布固件
         id: create_release
         uses: actions/create-release@v1
         if: steps.compile.outputs.status == 'success'
@@ -75,7 +78,7 @@ jobs:
           draft: false
           prerelease: false
 
-      - name: Upload release asset
+      - name: 上传固件源码
         id: upload-release-asset
         uses: actions/upload-release-asset@v1
         if: steps.compile.outputs.status == 'success'
