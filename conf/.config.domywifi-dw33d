@@ -403,7 +403,7 @@ CONFIG_DEFAULT_lsblk=y
 CONFIG_DEFAULT_luci=y
 CONFIG_DEFAULT_luci-app-accesscontrol=y
 CONFIG_DEFAULT_luci-app-adbyby-plus=y
-CONFIG_DEFAULT_luci-app-aria2=y
+# CONFIG_DEFAULT_luci-app-aria2 is not set
 CONFIG_DEFAULT_luci-app-arpbind=y
 CONFIG_DEFAULT_luci-app-autoreboot=y
 CONFIG_DEFAULT_luci-app-cpulimit=y
